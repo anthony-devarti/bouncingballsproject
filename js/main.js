@@ -58,6 +58,25 @@ class Ball {
       this.x += this.velX;
       this.y += this.velY;
     }
+
+    //woof
+    collisioinDetect() {
+      //for each ball in the balls array
+      for (const ball of balls) {
+        //if the ball we're checking position against is the same ball otherwise, they'd always be "colliding" with themselves
+        if(!(this === ball)) {
+          //then, if the x axis matches
+          const dx = this.x - ball.x;
+          //or the y axis matches
+          const dy = this.y -ball.y;
+          const distance = Math.sqrt(dx * dx + dy *dy);
+          //then we run the if statement to change the ball color
+          if (distance < this.size + ball.size) {
+            ball.color = this.color = randomRGB();
+          }
+        }
+      }
+    }
 };
 
 const balls = [];
@@ -85,8 +104,12 @@ function loop() {
   ctx.fillRect(0, 0, width, height);
   //this loops through the balls array, and runs the draw and update functions each time, updating each ball's position
   for (const ball of balls) {
+    //draws a ball
     ball.draw();
+    //calls the update function above
     ball.update();
+    //calls the collision detect function we defined earlier
+    ball.collisioinDetect();
   }
   //runs the function again, recursively.  This being a part of the loop function means it will keep repeating itself.
   requestAnimationFrame(loop);
