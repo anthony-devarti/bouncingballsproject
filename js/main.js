@@ -22,6 +22,7 @@ class EvilCircle {
     ctx.fillstyle = "blue";
     ctx.fill();
     ctx.closePath();
+    //mapping arrow keys to movement of the circle
     if(rightPressed) {
       evilCircleX += 5;
     }
@@ -34,9 +35,25 @@ class EvilCircle {
     else if (downPressed) {
       evilCircleY -= 5;
     }
+    else if (leftPressed && upPressed) {
+      evilCircleX -= 3;
+      evilCircleY += 3;
+    }
+    else if (leftPressed && downPressed) {
+      evilCircleX -= 3;
+      evilCircleY -= 3;
+    }
+    else if (rightPressed && upPressed) {
+      evilCircleX += 3;
+      evilCircleY += 3;
+    }
+    else if (rightPressed && downPressed) {
+      evilCircleX += 3;
+      evilCircleY -= 3;
+    }
   }
   //copy the behavior of the balls in regards to canvas edges in order to prevent it from going off the edge
-  /*commenting this out because it may be causing trouble.
+  
   update() {
     //checks if the ball has reached the right edge of the canvas and reducing its velocity to 0
     if ((this.x + this.size) >=width) {
@@ -57,7 +74,9 @@ class EvilCircle {
     //adds the size of the ball so that the ball stops when the edge reaches the end of the canvas, rather than the middle
     this.x += this.velX;
     this.y += this.velY;
-  }*/
+  }
+
+  
 }  
   evilCircleHeight = 200;
   evilCircleWidth = 200;
@@ -115,6 +134,7 @@ function randomRGB() {
   return `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`;
 }
 
+
 class Ball {
 
     constructor(x, y, velX, velY, color, size) {
@@ -156,7 +176,7 @@ class Ball {
     }
 
     //woof
-    collisioinDetect() {
+    collisionDetect() {
       //for each ball in the balls array
       for (const ball of balls) {
         //if the ball we're checking position against is the same ball otherwise, they'd always be "colliding" with themselves
@@ -203,6 +223,7 @@ const evilCircle1 = new EvilCircle (
   randomRGB(),
   100
 );
+evilCircle1.update();
 
 function loop() {
   //sets the background to a black color
@@ -216,7 +237,7 @@ function loop() {
     //calls the update function above
     ball.update();
     //calls the collision detect function we defined earlier
-    ball.collisioinDetect();
+    ball.collisionDetect();
     //trying to draw the evil circle in the loop
   }
   
