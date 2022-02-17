@@ -6,6 +6,102 @@ const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
+//create an evil circle object
+class EvilCircle {
+
+  constructor(x, y, color, size) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.size = size;
+  }
+  //puts the evil circle onto the canvas
+  drawEvilCircle() {
+    ctx.beginPath();
+    ctx.arc(evilCircleX, canvas.height-evilCircleHeight, evilCircleWidth, evilCircleHeight, 2 * Math.PI);
+    ctx.fillstyle = "blue";
+    ctx.fill();
+    ctx.closePath();
+    if(rightPressed) {
+      evilCircleX += 5;
+    }
+    else if(leftPressed) {
+      evilCircleX -= 5;
+    }
+    else if (upPressed) {
+      evilCircleY += 5;
+    }
+    else if (downPressed) {
+      evilCircleY -= 5;
+    }
+  }
+  //copy the behavior of the balls in regards to canvas edges in order to prevent it from going off the edge
+  /*
+  update() {
+    //checks if the ball has reached the right edge of the canvas and reducing its velocity to 0
+    if ((this.x + this.size) >=width) {
+      this.velX = -(this.velX);
+    }
+    //same, but for the left edge
+    if ((this.x - this.size) <= 0) {
+      this.velX = -(this.velX);
+    }
+    //same, but for the top edge
+    if ((this.y + this.size) >- height) {
+      this.velY = -(this.velY);
+    }
+    //same, but for the bottom edge
+    if ((this.y - this.size) <= 0) {
+      this.velY = -(this.velY);
+    }
+    //adds the size of the ball so that the ball stops when the edge reaches the end of the canvas, rather than the middle
+    this.x += this.velX;
+    this.y += this.velY;
+  }*/
+}  
+  evilCircleHeight = 200;
+  evilCircleWidth = 200;
+  evilCircleX = (canvas.width-evilCircleWidth) / 2;
+
+  //controls for the evil circle
+  //making these start out false so the evil circle doesn't move when the page loads
+  let rightPressed = false;
+  let leftPressed = false;
+  //listens for button presses
+  document.addEventListener("keydown", keyDownHandler, false);
+  document.addEventListener("keyup", keyUpHandler, false);
+
+//defines the key function handlers
+function keyDownHandler(e) {
+  if(e.key == "Right" || e.key == "arrowLeft") {
+    rightPressed = true;
+  }
+  else if(e.key == "Left" || e.key == "ArrowLeft") {
+    leftPressed = true;
+  }
+  else if(e.key == "Up" || e.key == "ArrowUp") {
+    upPressed = true;
+  }
+  else if(e.key == "Down" || e.key == "ArrowDown") {
+    downPressed = true;
+  }  
+}
+function keyUpHandler(e) {
+  if(e.key == "Right" || e.key == "ArrowRight") {
+    rightPressed = false;
+  }
+  else if(e.key == "Left"  || e.key == "ArrowLeft") {
+    leftPressed = false;
+  }
+  else if(e.key == "Up" || e.key == "ArrowUp"){
+    upPressed = false;
+  }
+  else if (e.key == "Down" || e.key == "ArrowDown") {
+    downPressed = false;
+  }
+}
+
+
 // function to generate random number
 
 function random(min, max) {
@@ -79,8 +175,11 @@ class Ball {
     }
 };
 
+
+
+//creates an empty object (array?) called balls
 const balls = [];
-/*While loop creates a new insance of the ball and generates a random size and color.
+/*While loop creates a new instance of the ball and generates a random size and color.
 It will keep doing this as long as there are fewer than 25 balls in play
 */
 while (balls.length < 25) {
@@ -97,6 +196,9 @@ while (balls.length < 25) {
  balls.push(ball); 
 }
 
+//creating an instance of the evil circle
+const evilCircle1 = new EvilCircle ()
+
 function loop() {
   //sets the background to a black color
   ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
@@ -110,7 +212,9 @@ function loop() {
     ball.update();
     //calls the collision detect function we defined earlier
     ball.collisioinDetect();
+    //trying to draw the evil circle in the loop
   }
+  
   //runs the function again, recursively.  This being a part of the loop function means it will keep repeating itself.
   requestAnimationFrame(loop);
 }
