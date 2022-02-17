@@ -17,7 +17,7 @@ class EvilCircle {
   }
   //puts the evil circle onto the canvas
   drawEvilCircle() {
-    ctx.beginPath();
+    //ctx.beginPath();
     ctx.arc(evilCircleX, canvas.height-evilCircleHeight, evilCircleWidth, evilCircleHeight, 2 * Math.PI);
     ctx.fillstyle = "blue";
     ctx.fill();
@@ -36,7 +36,7 @@ class EvilCircle {
     }
   }
   //copy the behavior of the balls in regards to canvas edges in order to prevent it from going off the edge
-  /*
+  /*commenting this out because it may be causing trouble.
   update() {
     //checks if the ball has reached the right edge of the canvas and reducing its velocity to 0
     if ((this.x + this.size) >=width) {
@@ -197,7 +197,12 @@ while (balls.length < 25) {
 }
 
 //creating an instance of the evil circle
-const evilCircle1 = new EvilCircle ()
+const evilCircle1 = new EvilCircle (
+  50,
+  50,
+  randomRGB(),
+  100
+);
 
 function loop() {
   //sets the background to a black color
